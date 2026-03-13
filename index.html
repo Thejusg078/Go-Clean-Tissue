@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GO CLEAN - Cyber-Tissue Future Hygiene</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* --- Base Styles & Variables --- */
+    :root {
+      --primary-bg: #03040c;
+      --secondary-bg: #060814;
+      --neon-cyan: #0ff;
+      --neon-magenta: #f0f;
+      --neon-green: #0f0;
+      --neon-blue: #00f;
+      --text-main: #fff;
+      --text-sub: rgba(255, 255, 255, 0.7);
+      --font-main: 'Orbitron', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--primary-bg);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* --- Background & Overlay --- */
+    .page-container {
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+      background-image: url('https://images.unsplash.com/photo-1605806616949-1e87b487cb2a?q=80&w=2000&auto=format&fit=crop'); 
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .page-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(180deg, rgba(3, 4, 12, 0.7) 0%, rgba(3, 4, 12, 0.95) 80%, var(--primary-bg) 100%);
+      z-index: 1;
+    }
+
+    /* --- Outer Header --- */
+    .outer-header {
+      width: 100%; padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 10;
+    }
+    .logo-container { text-align: left; }
+    .logo-text { color: var(--neon-cyan); font-size: 3rem; font-weight: 700; text-transform: uppercase; text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan); }
+    .logo-subtitle { color: var(--text-main); font-size: 1rem; letter-spacing: 2px; margin-top: -5px; }
+    .outer-nav { display: flex; gap: 30px; }
+    .outer-nav a { color: var(--text-main); text-decoration: none; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px; transition: color 0.3s; }
+    .outer-nav a:hover { color: var(--neon-cyan); }
+    .top-icons { display: flex; gap: 15px; }
+    .top-icons svg { width: 20px; height: 20px; fill: var(--text-main); cursor: pointer; transition: fill 0.3s; }
+    .top-icons svg:hover { fill: var(--neon-cyan); }
+
+    /* --- Main Web Panel --- */
+    .main-interface-container {
+      width: 90%; max-width: 1200px; margin: 20px auto; padding: 40px; position: relative; z-index: 5;
+      background: rgba(6, 8, 20, 0.85); border-radius: 10px; overflow: hidden; box-shadow: 0 0 20px rgba(0, 0, 0, 0.7); perspective: 1000px;
+    }
+    .main-interface-container::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      border: 2px solid var(--neon-cyan); box-shadow: 0 0 15px inset var(--neon-cyan), 0 0 20px var(--neon-cyan); border-radius: 10px; z-index: -1;
+    }
+    .main-interface-container::after {
+      content: ''; position: absolute; top: 10%; left: 10%; width: 80%; height: 80%;
+      border: 2px solid var(--neon-magenta); box-shadow: 0 0 15px inset var(--neon-magenta), 0 0 20px var(--neon-magenta); border-radius: 10px; z-index: -1; opacity: 0.7;
+    }
+
+    /* --- Web Panel Header --- */
+    .web-panel-header { text-align: center; text-transform: uppercase; margin-bottom: 40px; }
+    .new-arrival { font-size: 1.2rem; color: var(--neon-cyan); letter-spacing: 3px; }
+    .go-clean-inner { font-size: 2.5rem; font-weight: 700; letter-spacing: 1px; text-shadow: 0 0 10px var(--neon-magenta); }
+    .web-panel-subtitle { color: var(--text-main); font-size: 1rem; letter-spacing: 1px; margin-top: 5px; }
+    .pulp-info { color: var(--neon-cyan); font-size: 0.9rem; letter-spacing: 1px; margin-top: -3px; }
+
+    /* --- Product Carousel --- */
+    .product-showcase { display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 30px; transform-style: preserve-3d; }
+    .arrow-controls { display: flex; justify-content: space-between; width: 100%; max-width: 1000px; position: absolute; top: 50%; transform: translateY(-50%); padding: 0 30px; z-index: 20; }
+    .arrow { font-size: 2.5rem; color: var(--text-main); opacity: 0.6; cursor: pointer; user-select: none; transition: 0.3s; }
+    .arrow:hover { opacity: 1; color: var(--neon-cyan); }
+    
+    .product-list { display: flex; gap: 15px; justify-content: center; align-items: flex-end; transform-style: preserve-3d; margin-top: -30px; }
+
+    /* Product Boxes */
+    .product-box {
+      width: 180px; height: 250px; border-radius: 5px; position: relative; display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 15px; background: var(--secondary-bg); transform-style: preserve-3d; transition: transform 0.3s ease, filter 0.3s ease;
+      filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.7)); border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .product-box.center {
+      width: 240px; height: 320px; transform: scale(1); filter: drop-shadow(0 0 15px var(--neon-magenta));
+    }
+    .product-box.center::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 3px solid var(--neon-magenta); border-radius: 5px; box-shadow: 0 0 15px inset var(--neon-magenta), 0 0 15px var(--neon-magenta); z-index: 5; pointer-events: none;
+    }
+
+    .product-box.side-left, .product-box.side-right { transform: scale(0.85); filter: brightness(0.6); }
+    .product-box.side-left { transform: scale(0.85) rotateY(15deg) translateZ(-50px); border: 2px solid var(--neon-cyan); }
+    .product-box.side-right { transform: scale(0.85) rotateY(-15deg) translateZ(-50px); border: 2px solid var(--neon-green); }
+
+    /* IMAGE INTEGRATION CLASSES */
+    .product-img {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 4px; z-index: 0;
+    }
+    .overlay-grad {
+      position: absolute; bottom: 0; left: 0; width: 100%; height: 70%; background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, transparent); z-index: 1; border-radius: 0 0 4px 4px;
+    }
+    
+    .product-box-content { position: relative; z-index: 2; }
+    .feel-luxury { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-main); position: absolute; top: 10px; left: 10px; z-index: 2; background: rgba(0,0,0,0.5); padding: 2px 5px; }
+    .product-box-text { font-size: 0.85rem; color: var(--text-main); text-transform: uppercase; margin-top: 10px; letter-spacing: 1px; }
+    .met-black-small { color: var(--neon-magenta); font-size: 0.75rem;}
+    .variant-text { color: var(--neon-cyan); font-size: 0.7rem; }
+
+    /* --- Cyberpunk SHOP NOW Button --- */
+    .action-container { text-align: center; margin: 30px 0 50px 0; }
+    .cyber-button {
+      background: rgba(0, 255, 255, 0.1); color: var(--neon-cyan); border: 2px solid var(--neon-cyan); padding: 15px 50px;
+      font-size: 1.5rem; font-family: 'Orbitron', sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: 4px;
+      cursor: pointer; position: relative; transition: all 0.2s ease; box-shadow: 0 0 15px rgba(0, 255, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.2);
+      clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%); display: inline-flex; align-items: center; gap: 15px;
+    }
+    .cyber-button:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 30px var(--neon-cyan), inset 0 0 20px #fff; transform: scale(1.02); }
+    .cyber-price { background: #000; color: var(--neon-cyan); padding: 2px 10px; font-size: 1.2rem; border: 1px solid var(--neon-cyan); }
+    .cyber-button:hover .cyber-price { color: #fff; border-color: #000; }
+
+    /* Pagination */
+    .pagination-dots { text-align: center; margin-top: 10px; margin-bottom: 20px; }
+    .dot { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--neon-cyan); border-radius: 50%; margin: 0 6px; cursor: pointer; }
+    .dot.active { background: var(--neon-cyan); box-shadow: 0 0 10px var(--neon-cyan); }
+
+    /* --- Features Grid --- */
+    .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 80%; margin: 0 auto 40px; }
+    .feature-item { display: flex; align-items: center; gap: 15px; color: var(--text-main); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }
+    .feature-item svg { width: 30px; height: 30px; fill: var(--neon-green); }
+
+    /* --- Footer Text --- */
+    .web-panel-footer { text-align: center; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+    .met-black-final { font-size: 1.8rem; font-weight: 500; }
+    .choose-hygiene { font-size: 1rem; color: var(--neon-cyan); margin-top: -5px; }
+
+    @media (max-width: 768px) {
+      .product-list { flex-direction: column; align-items: center; gap: 20px; }
+      .product-box, .product-box.center { transform: none; filter: none; width: 85%; max-width: 330px; height: 350px;}
+      .features-grid { grid-template-columns: 1fr; }
+      .arrow-controls, .pagination-dots { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-container">
+    <div class="page-overlay"></div>
+
+    <header class="outer-header">
+      <div class="logo-container">
+        <h1 class="logo-text">GO CLEAN</h1>
+        <p class="logo-subtitle">CYBER-TISSUE // FUTURE HYGIENE</p>
+      </div>
+      <nav class="outer-nav">
+        <a href="#">SHOP</a><a href="#">TECH</a><a href="#">SUSTAINABILITY</a>
+      </nav>
+      <div class="top-icons">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+      </div>
+    </header>
+
+    <main class="main-interface-container">
+
+      <div class="web-panel-header">
+        <p class="new-arrival">NEW ARRIVAL</p>
+        <h2 class="go-clean-inner">GO CLEAN</h2>
+        <p class="web-panel-subtitle">// NEON-FRESH // BIO-FRIENDLY</p>
+        <p class="pulp-info">100% REGENERATIVE BIO-PULP</p>
+      </div>
+
+      <section class="product-showcase">
+        <div class="arrow-controls"><span class="arrow">&laquo;</span><span class="arrow">&raquo;</span></div>
+
+        <div class="product-list">
+          
+          <div class="product-box far-left side-left">
+            <img src="/static/image_ca5573.png" class="product-img" alt="Arlide Tissue">
+            <div class="overlay-grad"></div>
+            <span class="feel-luxury">FEEL THE LUXURY</span>
+            <div class="product-box-content">
+              <div class="product-box-text">GO CLEAN<br><span class="variant-text">BOSS EDITION</span></div>
+            </div>
+          </div>
+
+          <div class="product-box side-left">
+            <img src="/static/image_ca54f9.png" class="product-img" alt="Red & Black Box">
+            <div class="overlay-grad"></div>
+            <span class="feel-luxury">FEEL THE LUXURY</span>
+            <div class="product-box-content">
+              <div class="product-box-text">GO CLEAN<br><span class="variant-text">DUAL FUSION</span></div>
+            </div>
+          </div>
+
+          <div class="product-box center active">
+            <img src="/static/image_ca5518.jpg" class="product-img" alt="Met Black Box">
+            <div class="overlay-grad"></div>
+            <span class="feel-luxury">FEEL THE LUXURY</span>
+            <div class="product-box-content">
+              <div class="product-box-text">MCT BLACK. FIRST TIME IN INDIA<br><span class="met-black-small">CLEAN-BURN PULP.</span></div>
+            </div>
+          </div>
+
+          <div class="product-box side-right">
+            <img src="/static/image_ca54d9.jpg" class="product-img" alt="Multi-Color Premier Boxes">
+            <div class="overlay-grad"></div>
+            <span class="feel-luxury">FEEL THE LUXURY</span>
+            <div class="product-box-content">
+              <div class="product-box-text">GO CLEAN<br><span class="variant-text">ECO-SHIELD TISSUE</span></div>
+            </div>
+          </div>
+
+          <div class="product-box side-right">
+            <img src="/static/image_ca5518.jpg" class="product-img" alt="Met Black Box">
+            <div class="overlay-grad"></div>
+            <span class="feel-luxury">FEEL THE LUXURY</span>
+            <div class="product-box-content">
+              <div class="product-box-text">GO CLEAN<br><span class="variant-text">NEON PULP DRYER</span></div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <div class="pagination-dots">
+        <span class="dot"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+
+      <div class="action-container">
+        <button class="cyber-button" onclick="initiateCheckout()">
+          SHOP NOW <span class="cyber-price">₹100</span>
+        </button>
+      </div>
+
+      <section class="features-grid">
+        <div class="feature-item"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> BIODEGRADABLE NANO-FIBER</div>
+        <div class="feature-item"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L8 11v1h2l1 1h1v1h-1l-1 1v1h2l1 1h2l1 1h-2v1.93zM19.79 10.21c-.26-.72-.61-1.39-1.03-2.01L17 9.94l1 1v1h-2l-1-1h-1v-1l1-1h1v-1l-1-1v-1l1-1h-1v1H11l-1 1v1H9l-1 1H7l-1 1h1l1 1h1l1 1h1v2.01C7.01 16.07 4 12.07 4 12s.01-.07 4-.07zM12 4.07V6h2l1 1h2l1 1h-1v1l-1 1v1H12v1.93c3.95.49 7 3.85 7 7.93 0 .62-.08 1.21-.21 1.79L16 13v-1l-1-1h-2l-1-1V9l-1-1V8l1-1v-1h2v-1.93z"/></svg> EARTH-CONSCIOUS MANUFACTURING</div>
+        <div class="feature-item"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v4H7v2h4v4h2v-4h4v-2h-4V7z"/></svg> REGENERATIVE PULP TECHNOLOGY</div>
+        <div class="feature-item"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4c-1.48 0-2.85.43-4.01 1.17C6.11 6.13 5.37 7.9 5.37 10.04C3.33 11.23 2 13.43 2 16c0 3.31 2.69 6 6 6h11c3.31 0 6-2.69 6-6 0-3.31-2.69-6-6-6zm-7-2v4H8v2h4.35c.75 0 1.4.52 1.58 1.26l.49 1.95c.21.84.97 1.39 1.83 1.39H18v2h-1.75c-1.72 0-3.23-.81-4.11-2.07C10.63 17.18 8.44 18 6 18c-2.76 0-5-2.24-5-5s2.24-5 5-5c1.48 0 2.8.63 3.73 1.63C10.74 8.64 12.3 8 14 8c1.65 0 3.1.84 3.96 2.1C18.42 10.03 18.88 10 19.35 10c2.76 0 5 2.24 5 5s-2.24 5-5 5H19c-1.72 0-3.23-.81-4.11-2.07c-1.51.98-3.41.98-4.92 0C9.37 18.19 8 16.7 8 15v-1l-.49-1.95A1.82 1.82 0 0 0 5.68 11.2a1.82 1.82 0 0 0-1.83-1.39C2.7 9.81 2 9.11 2 8c0-1.1.9-2 2-2 1.1 0 2 .9 2 2v1h1l.49 1.95c.21.84.97 1.39 1.83 1.39h.68c.86 0 1.62-.55 1.83-1.39L10 11H9V9h2v1.95C11.69 11.66 12.8 11 14 11s2.31.66 3 1.95C17.69 11.66 18.8 11 20 11s2.31.66 3 1.95C23.69 11.66 24 10.97 24 10c0-2.76-2.24-5-5-5-.47 0-.93.03-1.38.1.86-.96 1.38-2.25 1.38-3.6 0-3.31-2.69-6-6-6S7.06.69 6.2 1.63C4.8 1.03 3.32 1.03 2 1.63 1.14.69 1 2.31.69 1.38.12.92.1 1.38.1H1.38C.62-.03.31-.13 0-.1zm0-4c1.1 0 2 .9 2 2v2H10V8H8l-.49-1.95c-.21-.84-.97-1.39-1.83-1.39h-.68c-.86 0-1.62.55-1.83 1.39L4 6h1V4c1.1 0 2-.9 2-2zm0-4v2h2v1H8l-.49 1.95c-.21.84-.97 1.39-1.83 1.39H5.68c-.86 0-1.62-.55-1.83-1.39L3 6h1v1h1c1.1 0 2-.9 2-2zm0 4h2l1 1h2l1 1h-1v1l-1 1v1h-2v1h-2v1H11v1H9v-1H7v-1h2v-1h2v-1h2v-1zm0 4v2H10v2h2v1h2v-1h2v1h2v-1h2v1h-2v-2h-2v-1h-2v1h-2v-1H12v-2z"/></svg> ZERO-EMISSION PROCESS</div>
+      </section>
+
+      <div class="web-panel-footer">
+        <p class="met-black-final">MET BLACK. FIRST TIME IN INDIA <strong>//</strong></p>
+        <p class="choose-hygiene">CHOOSE BIO-HYGIENE. GO CLEAN. GO FUTURE.</p>
+      </div>
+
+    </main>
+
+  </div>
+
+  <script>
+    // Keeping your fetch logic intact for your Flask backend
+    function initiateCheckout() {
+        const btn = document.querySelector('.cyber-button');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = "> ESTABLISHING UPLINK...";
+        
+        fetch('/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.status === 'success') {
+                setTimeout(() => {
+                    btn.innerHTML = "> CONNECTION SECURE. INITIATING PAYMENT.";
+                    btn.style.backgroundColor = "#0f0";
+                    btn.style.color = "#000";
+                    // Trigger Razorpay modal here
+                }, 800);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            btn.innerHTML = "> ERROR: CONNECTION SEVERED.";
+            btn.style.backgroundColor = "#f00";
+        });
+    }
+  </script>
+
+</body>
+</html>
